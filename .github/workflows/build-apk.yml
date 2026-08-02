@@ -39,29 +39,40 @@ jobs:
     - name: Make gradlew executable
       run: chmod +x android/gradlew
       
-    - name: Build Debug APK (Reliable)
+    - name: Create assets directory
+      run: mkdir -p android/app/src/main/assets
+      
+    - name: Build JS Bundle
+      run: |
+        npx react-native bundle \
+          --platform android \
+          --dev false \
+          --entry-file node_modules/expo/AppEntry.js \
+          --bundle-output android/app/src/main/assets/index.android.bundle \
+          --assets-dest android/app/src/main/res/
+      
+    - name: Build Release APK
       run: |
         cd android
-        ./gradlew assembleDebug --no-daemon
-        
+        ./gradlew assembleRelease --no-daemon
+      
     - name: Find APK files
       run: |
         echo "=== Looking for APK files ==="
         find android -name "*.apk" -type f
         echo "=== APK directory listing ==="
         ls -la android/app/build/outputs/apk/ || true
-        ls -la android/app/build/outputs/apk/debug/ || true
         ls -la android/app/build/outputs/apk/release/ || true
         
-    - name: Upload Debug APK
+    - name: Upload Release APK
       uses: actions/upload-artifact@v4
       with:
         name: roozegar-pro-apk
-        path: android/app/build/outputs/apk/debug/app-debug.apk
+        path: android/app/build/outputs/apk/release/app-release-unsigned.apk
         
-    - name: Upload any APK found (fallback)
+    - name: Upload Debug APK (fallback)
       if: failure()
       uses: actions/upload-artifact@v4
       with:
-        name: roozegar-pro-apk-fallback
-        path: android/app/build/outputs/apk/**/*.apk
+        name: roozegar-pro-debug-apk
+        path: android/app/build/outputs/apk/debug/app-debug.apk
