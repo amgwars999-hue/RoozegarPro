@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "Roozegar Pro",
+    "slug": "roozegar-pro",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "backgroundColor": "#C8E636"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.roozegar.pro",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "برای قفل گذاری روی یادداشت‌های خصوصی"
+      }
+    },
+    "android": {
+      "package": "com.roozegar.pro",
+      "permissions": [
+        "android.permission.USE_BIOMETRIC",
+        "android.permission.USE_FINGERPRINT"
+      ]
+    },
+    "plugins": [
+      "expo-notifications",
+      "expo-secure-store",
+      "expo-local-authentication"
+    ]
+  }
+}
