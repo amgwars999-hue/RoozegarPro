@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Dimensions, Alert, Share } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '@/theme/ThemeContext';
 import DrawingCanvas from '@/components/DrawingCanvas';
@@ -27,6 +27,14 @@ export default function DayDetailScreen({ route, navigation }: DayDetailScreenPr
   const [drawingPaths, setDrawingPaths] = useState<any[]>([]);
 
   const holidayName = getHolidayTitle(jDate);
+
+  const handleShare = async () => {
+    try {
+      await Share.share({
+        message: `روزگار پرو - ${formatJalaliFull(jDate)}\n${noteText || 'یادداشتی ثبت نشده'}`,
+      });
+    } catch {}
+  };
 
   const toggleCheckbox = useCallback((id: string) => {
     setCheckboxes(prev => prev.map(c => c.id === id ? { ...c, checked: !c.checked } : c));
@@ -72,7 +80,10 @@ export default function DayDetailScreen({ route, navigation }: DayDetailScreenPr
             <Text style={[styles.holidayName, { color: theme.danger }]}>{holidayName}</Text>
           )}
         </View>
-        <TouchableOpacity style={[styles.shareBtn, { backgroundColor: theme.primary }]}>
+        <TouchableOpacity 
+          style={[styles.shareBtn, { backgroundColor: theme.primary }]} 
+          onPress={handleShare}
+        >
           <Text style={styles.shareText}>↗</Text>
         </TouchableOpacity>
       </View>

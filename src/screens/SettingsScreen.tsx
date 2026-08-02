@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Share, Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Share, Platform, Alert } from 'react-native';
 import { useTheme } from '@/theme/ThemeContext';
 import Toggle from '@/components/Toggle';
 import { useAppStore } from '@/store/appStore';
@@ -28,6 +28,10 @@ export default function SettingsScreen({ navigation }: any) {
         message: `Roozegar Pro Support Info:\nVersion: 1.0.0\nUser: ${profile.name}\nPlatform: ${Platform.OS}`,
       });
     } catch {}
+  };
+
+  const showComingSoon = () => {
+    Alert.alert('به زودی', 'این قابلیت در نسخه بعدی اضافه می‌شود.');
   };
 
   const SectionTitle = ({ title }: { title: string }) => (
@@ -76,7 +80,10 @@ export default function SettingsScreen({ navigation }: any) {
       {/* Header */}
       <View style={styles.header}>
         <Text style={[styles.headerTitle, { color: theme.text }]}>تنظیمات</Text>
-        <TouchableOpacity style={[styles.closeBtn, { backgroundColor: theme.surface }]}>
+        <TouchableOpacity 
+          style={[styles.closeBtn, { backgroundColor: theme.surface }]} 
+          onPress={() => navigation?.goBack?.()}
+        >
           <Text style={{ color: theme.text, fontSize: 18 }}>✕</Text>
         </TouchableOpacity>
       </View>
@@ -106,7 +113,7 @@ export default function SettingsScreen({ navigation }: any) {
         <Row 
           icon="🎨"
           title="تغییر آیکون اپ"
-          onPress={() => navigation?.navigate('AppIconPicker')}
+          onPress={showComingSoon}
         />
         <Row 
           icon="↕️"
@@ -120,7 +127,7 @@ export default function SettingsScreen({ navigation }: any) {
           icon="📝"
           title="قالب یادداشت"
           subtitle="مناسب برای لیست کارهای روزانه"
-          onPress={() => navigation?.navigate('NoteDesigns')}
+          onPress={showComingSoon}
         />
         <Row 
           icon="🔒"
@@ -177,15 +184,15 @@ export default function SettingsScreen({ navigation }: any) {
           icon="🎨"
           title="رنگ تم"
           subtitle="تغییر رنگ اصلی اپلیکیشن"
-          onPress={() => navigation?.navigate('AccentColorPicker')}
+          onPress={showComingSoon}
         />
       </View>
 
       {/* Help */}
       <SectionTitle title="راهنما" />
       <View style={[styles.card, { backgroundColor: theme.surface }]}>
-        <Row icon="🔄" title="مشاهده آموزش دوباره" onPress={() => {}} />
-        <Row icon="❓" title="سوالات متداول" onPress={() => {}} />
+        <Row icon="🔄" title="مشاهده آموزش دوباره" onPress={showComingSoon} />
+        <Row icon="❓" title="سوالات متداول" onPress={showComingSoon} />
         <Row icon="📋" title="کپی اطلاعات پشتیبانی" onPress={handleShareSupport} showArrow={false} />
       </View>
 

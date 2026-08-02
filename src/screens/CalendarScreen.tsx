@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Dimensions, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import PersianCalendar from '@/components/PersianCalendar';
 import { useTheme } from '@/theme/ThemeContext';
@@ -44,6 +44,10 @@ export default function CalendarScreen({ navigation }: any) {
   const [currentMonth, setCurrentMonth] = useState(today.month);
   const [selectedDate, setSelectedDate] = useState<JalaliDate>(today);
 
+  const showComingSoon = () => {
+    Alert.alert('به زودی', 'این قابلیت در نسخه بعدی اضافه می‌شود.');
+  };
+
   const handleSelectDate = useCallback((jDate: JalaliDate) => {
     setSelectedDate(jDate);
     navigation.navigate('DayDetail', { jDate });
@@ -74,7 +78,10 @@ export default function CalendarScreen({ navigation }: any) {
             {formatJalaliFull(today)}
           </Text>
         </View>
-        <TouchableOpacity style={[styles.addBtn, { backgroundColor: theme.primary }]}>
+        <TouchableOpacity 
+          style={[styles.addBtn, { backgroundColor: theme.primary }]} 
+          onPress={() => navigation.navigate('DayDetail', { jDate: selectedDate })}
+        >
           <Text style={styles.addBtnText}>+</Text>
         </TouchableOpacity>
       </View>
@@ -114,7 +121,7 @@ export default function CalendarScreen({ navigation }: any) {
                   <TouchableOpacity 
                     key={event.id} 
                     style={[styles.eventRow, { backgroundColor: event.color + '15' }]}
-                    onPress={() => navigation.navigate('EventForm', { event })}
+                    onPress={showComingSoon}
                   >
                     <View style={[styles.eventDot, { backgroundColor: event.color }]} />
                     <Text style={[styles.eventTitle, { color: theme.text }]}>{event.title}</Text>
@@ -131,19 +138,31 @@ export default function CalendarScreen({ navigation }: any) {
 
         {/* Quick Actions */}
         <View style={styles.quickActions}>
-          <TouchableOpacity style={[styles.actionBtn, { backgroundColor: theme.surface }]}>
+          <TouchableOpacity 
+            style={[styles.actionBtn, { backgroundColor: theme.surface }]} 
+            onPress={showComingSoon}
+          >
             <Text style={{ fontSize: 24 }}>🎙️</Text>
             <Text style={[styles.actionText, { color: theme.text }]}>صوتی</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.actionBtn, { backgroundColor: theme.surface }]}>
+          <TouchableOpacity 
+            style={[styles.actionBtn, { backgroundColor: theme.surface }]} 
+            onPress={() => navigation.navigate('DayDetail', { jDate: selectedDate })}
+          >
             <Text style={{ fontSize: 24 }}>✏️</Text>
             <Text style={[styles.actionText, { color: theme.text }]}>نوشتن</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.actionBtn, { backgroundColor: theme.surface }]}>
+          <TouchableOpacity 
+            style={[styles.actionBtn, { backgroundColor: theme.surface }]} 
+            onPress={showComingSoon}
+          >
             <Text style={{ fontSize: 24 }}>📷</Text>
             <Text style={[styles.actionText, { color: theme.text }]}>اسکن</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.actionBtn, { backgroundColor: theme.surface }]}>
+          <TouchableOpacity 
+            style={[styles.actionBtn, { backgroundColor: theme.surface }]} 
+            onPress={showComingSoon}
+          >
             <Text style={{ fontSize: 24 }}>🔗</Text>
             <Text style={[styles.actionText, { color: theme.text }]}>اشتراک</Text>
           </TouchableOpacity>
